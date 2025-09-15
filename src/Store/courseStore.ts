@@ -3,8 +3,10 @@ import { create } from 'zustand';
 export interface Course {
   id: string;
   code: string;
-  name: string;
+  nameTH: string;
+  nameEN: string;
   credits: number;
+  instructor: string;
   grade?: string;
 }
 
@@ -16,6 +18,7 @@ interface CourseStore {
   restoreCourse: (id: string) => void;
   updateGrade: (id: string, grade: string) => void;
   calculateGPA: () => number;
+  getGPA: () => number;
 }
 
 const gradePoints: Record<string, number> = {
@@ -77,4 +80,8 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
 
     return totalCredits > 0 ? Number((totalPoints / totalCredits).toFixed(2)) : 0;
   },
+
+  getGPA: () => {
+    return get().calculateGPA();
+  }
 }));

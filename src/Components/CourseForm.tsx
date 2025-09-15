@@ -4,6 +4,7 @@ import { useCourseStore } from '../Store/CourseStore.ts';
 const CourseForm = () => {
   const addCourse = useCourseStore((state) => state.addCourse);
   const [formData, setFormData] = useState({
+    code: '',
     nameTH: '',
     nameEN: '',
     credits: 3,
@@ -13,8 +14,16 @@ const CourseForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addCourse(formData);
+    addCourse({
+      code: formData.code,
+      nameTH: formData.nameTH,
+      nameEN: formData.nameEN,
+      credits: Number(formData.credits),
+      instructor: formData.instructor,
+      grade: formData.grade
+    });
     setFormData({
+      code: '',
       nameTH: '',
       nameEN: '',
       credits: 3,
@@ -25,6 +34,17 @@ const CourseForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 mb-6 p-6 bg-white/10 rounded-lg backdrop-blur-sm">
+      <div className="space-y-2">
+        <label className="block text-lg font-medium text-white">รหัสวิชา</label>
+        <input
+          type="text"
+          placeholder="กรุณากรอกรหัสวิชา"
+          value={formData.code}
+          onChange={(e) => setFormData({...formData, code: e.target.value})}
+          className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white placeholder-gray-300"
+        />
+      </div>
+      
       <div className="space-y-2">
         <label className="block text-lg font-medium text-white">ชื่อวิชา (ไทย)</label>
         <input
