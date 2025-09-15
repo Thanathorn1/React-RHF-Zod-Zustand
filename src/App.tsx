@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import CourseForm from './components/CourseForm';
-import CourseList from './components/CourseList';
-import CourseDrop from './components/CourseDrop';
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
+import CourseForm from './Components/CourseForm.tsx';
+import CourseList from './Components/CourseList';
+import CourseDrop from './Components/CourseDrop';
+import TodoInput from './Components/TodoInput';
+import TodoList from './Components/TodoList';
 import './App.css';
 
 function App() {

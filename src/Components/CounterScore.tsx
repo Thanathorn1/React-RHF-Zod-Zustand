@@ -1,5 +1,5 @@
 // CounterScore.tsx
-import { useCounterStore } from "src/Store/CounterStore.ts";
+import { useCounterStore } from "../Store/CounterStore.ts";
 
 const CounterScore = () => {
     const { count } = useCounterStore();

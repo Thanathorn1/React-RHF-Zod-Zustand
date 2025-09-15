@@ -1,4 +1,4 @@
-import { useCourseStore } from 'src/Store/CourseStore.ts';
+import { useCourseStore } from '../Store/CourseStore.ts';
 
 const CourseDrop = () => {
   const droppedCourses = useCourseStore((state) => state.droppedCourses);

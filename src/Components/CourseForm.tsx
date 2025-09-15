@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCourseStore } from 'src/Store/CourseStore.ts';
+import { useCourseStore } from '../Store/CourseStore.ts';
 
 const CourseForm = () => {
   const addCourse = useCourseStore((state) => state.addCourse);
