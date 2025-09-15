@@ -1,50 +1,80 @@
 import { create } from 'zustand';
 
-interface Course {
+export interface Course {
   id: string;
-  nameTH: string;
-  nameEN: string;
+  code: string;
+  name: string;
   credits: number;
-  instructor: string;
-  grade: string;
+  grade?: string;
 }
 
-interface CourseState {
+interface CourseStore {
   courses: Course[];
   droppedCourses: Course[];
-  addCourse: (course: Omit<Course, "id">) => void;
-  dropCourse: (courseId: string) => void;
-  getGPA: () => number;
+  addCourse: (course: Omit<Course, 'id'>) => void;
+  dropCourse: (id: string) => void;
+  restoreCourse: (id: string) => void;
+  updateGrade: (id: string, grade: string) => void;
+  calculateGPA: () => number;
 }
 
-export const useCourseStore = create<CourseState>((set, get) => ({
+const gradePoints: Record<string, number> = {
+  A: 4.0,
+  'B+': 3.5,
+  B: 3.0,
+  'C+': 2.5,
+  C: 2.0,
+  'D+': 1.5,
+  D: 1.0,
+  F: 0,
+};
+
+export const useCourseStore = create<CourseStore>((set, get) => ({
   courses: [],
   droppedCourses: [],
+
   addCourse: (course) =>
     set((state) => ({
-      courses: [...state.courses, { ...course, id: Date.now().toString() }],
+      courses: [...state.courses, { ...course, id: Math.random().toString() }],
     })),
-  dropCourse: (courseId) =>
+
+  dropCourse: (id) =>
     set((state) => {
-      const course = state.courses.find((c) => c.id === courseId);
+      const course = state.courses.find((c) => c.id === id);
       if (!course) return state;
       return {
-        courses: state.courses.filter((c) => c.id !== courseId),
+        courses: state.courses.filter((c) => c.id !== id),
         droppedCourses: [...state.droppedCourses, course],
       };
     }),
-  getGPA: () => {
+
+  restoreCourse: (id) =>
+    set((state) => {
+      const course = state.droppedCourses.find((c) => c.id === id);
+      if (!course) return state;
+      return {
+        droppedCourses: state.droppedCourses.filter((c) => c.id !== id),
+        courses: [...state.courses, course],
+      };
+    }),
+
+  updateGrade: (id, grade) =>
+    set((state) => ({
+      courses: state.courses.map((course) =>
+        course.id === id ? { ...course, grade } : course
+      ),
+    })),
+
+  calculateGPA: () => {
     const { courses } = get();
-    const gradePoints: { [key: string]: number } = {
-      'A': 4, 'B+': 3.5, 'B': 3, 'C+': 2.5, 
-      'C': 2, 'D+': 1.5, 'D': 1, 'F': 0
-    };
-    
-    const totalPoints = courses.reduce((acc, course) => 
-      acc + (gradePoints[course.grade] || 0) * course.credits, 0);
-    const totalCredits = courses.reduce((acc, course) => 
-      acc + course.credits, 0);
-    
-    return totalCredits === 0 ? 0 : totalPoints / totalCredits;
+    const totalPoints = courses.reduce((acc, course) => {
+      if (!course.grade) return acc;
+      return acc + gradePoints[course.grade] * course.credits;
+    }, 0);
+
+    const totalCredits = courses.reduce((acc, course) =>
+      course.grade ? acc + course.credits : acc, 0);
+
+    return totalCredits > 0 ? Number((totalPoints / totalCredits).toFixed(2)) : 0;
   },
 }));
