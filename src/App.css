@@ -1,0 +1,156 @@
+:root {
+  --maejo-green: #1B4D3E;
+  --maejo-light-green: #2A7252;
+  --maejo-gold: #D4AF37;
+  --maejo-light-gold: #F7E7CE;
+}
+
+#root {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.maejo-container {
+  background: linear-gradient(135deg, var(--maejo-green), var(--maejo-light-green));
+  min-height: 100vh;
+  color: white;
+}
+
+.maejo-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--maejo-gold);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .maejo-header h1 {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+  
+  .maejo-header img {
+    height: 2rem;
+  }
+  
+  .maejo-button {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+.maejo-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  transition: transform 0.2s ease;
+}
+
+.maejo-card:hover {
+  transform: translateY(-4px);
+}
+
+@media (min-width: 1024px) {
+  .maejo-container {
+    padding: 1rem;
+  }
+  
+  .maejo-header {
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .maejo-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Add new responsive grid styles */
+.grid-container {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Form responsive styles */
+.form-control {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+}
+
+.form-control input,
+.form-control select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Button group responsive */
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .maejo-button {
+    width: 100%;
+  }
+}
