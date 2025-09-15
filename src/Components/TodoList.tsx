@@ -1,11 +1,11 @@
-import { useTodoStore } from '../Store/TodoStore.ts';
+import { useTodoStore, type Todo } from '../Store/TodoStore';
 
 const TodoList = () => {
   const { todos, deleteTodo, toggleTodo } = useTodoStore();
 
   return (
-    <ul className="space-y-2">
-      {todos.map((todo) => (
+    <div className="space-y-4">
+      {todos.map((todo: Todo) => (
         <li key={todo.id} className="flex items-center gap-2 p-2 border">
           <input
             type="checkbox"
@@ -23,7 +23,7 @@ const TodoList = () => {
           </button>
         </li>
       ))}
-    </ul>
+    </div>
   );
 };
 

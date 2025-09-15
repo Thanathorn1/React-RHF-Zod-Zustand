@@ -1,113 +1,87 @@
-import { useState } from 'react';
-import { useCourseStore } from '../Store/CourseStore.ts';
+import { useForm } from 'react-hook-form';
+import { useCourseStore, type Course } from '../Store/CourseStore';
+
+type CourseFormData = Omit<Course, 'id'>;
 
 const CourseForm = () => {
-  const addCourse = useCourseStore((state) => state.addCourse);
-  const [formData, setFormData] = useState({
-    code: '',
-    nameTH: '',
-    nameEN: '',
-    credits: 3,
-    instructor: '',
-    grade: 'A'
-  });
+  const { register, handleSubmit, reset } = useForm<CourseFormData>();
+  const addCourse = useCourseStore(state => state.addCourse);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addCourse({
-      code: formData.code,
-      nameTH: formData.nameTH,
-      nameEN: formData.nameEN,
-      credits: Number(formData.credits),
-      instructor: formData.instructor,
-      grade: formData.grade
-    });
-    setFormData({
-      code: '',
-      nameTH: '',
-      nameEN: '',
-      credits: 3,
-      instructor: '',
-      grade: 'A'
-    });
+  const onSubmit = (data: CourseFormData) => {
+    addCourse(data);
+    reset();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 mb-6 p-6 bg-white/10 rounded-lg backdrop-blur-sm">
-      <div className="space-y-2">
-        <label className="block text-lg font-medium text-white">รหัสวิชา</label>
-        <input
-          type="text"
-          placeholder="กรุณากรอกรหัสวิชา"
-          value={formData.code}
-          onChange={(e) => setFormData({...formData, code: e.target.value})}
-          className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white placeholder-gray-300"
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="block text-lg font-medium text-white">ชื่อวิชา (ไทย)</label>
-        <input
-          type="text"
-          placeholder="กรุณากรอกชื่อวิชาภาษาไทย"
-          value={formData.nameTH}
-          onChange={(e) => setFormData({...formData, nameTH: e.target.value})}
-          className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white placeholder-gray-300"
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="block text-lg font-medium text-white">Course Name (English)</label>
-        <input
-          type="text"
-          placeholder="Enter course name in English"
-          value={formData.nameEN}
-          onChange={(e) => setFormData({...formData, nameEN: e.target.value})}
-          className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white placeholder-gray-300"
-        />
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="block text-lg font-medium text-white">Course Code</label>
+          <input
+            {...register('code')}
+            type="text"
+            className="w-full p-2 rounded"
+            required
+          />
+        </div>
 
-      <div className="grid grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="block text-lg font-medium text-white">Thai Name</label>
+          <input
+            {...register('nameTH')}
+            type="text"
+            className="w-full p-2 rounded"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-lg font-medium text-white">English Name</label>
+          <input
+            {...register('nameEN')}
+            type="text"
+            className="w-full p-2 rounded"
+            required
+          />
+        </div>
+
         <div className="space-y-2">
           <label className="block text-lg font-medium text-white">Credits</label>
           <input
+            {...register('credits', { valueAsNumber: true })}
             type="number"
-            placeholder="Credits"
-            value={formData.credits}
-            onChange={(e) => setFormData({...formData, credits: Number(e.target.value)})}
-            className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white"
+            className="w-full p-2 rounded"
+            required
           />
         </div>
-        
+
+        <div className="space-y-2">
+          <label className="block text-lg font-medium text-white">Instructor</label>
+          <input
+            {...register('instructor')}
+            type="text"
+            className="w-full p-2 rounded"
+            required
+          />
+        </div>
+
         <div className="space-y-2">
           <label className="block text-lg font-medium text-white">Grade</label>
-          <select
-            value={formData.grade}
-            onChange={(e) => setFormData({...formData, grade: e.target.value})}
-            className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white"
-          >
-            {['A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F'].map(grade => (
-              <option key={grade} value={grade} className="bg-gray-800">{grade}</option>
-            ))}
+          <select {...register('grade')} className="w-full p-2 rounded">
+            <option value="">Select Grade</option>
+            <option value="A">A</option>
+            <option value="B+">B+</option>
+            <option value="B">B</option>
+            <option value="C+">C+</option>
+            <option value="C">C</option>
+            <option value="D+">D+</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
           </select>
         </div>
       </div>
 
-      <div className="space-y-2">
-        <label className="block text-lg font-medium text-white">Instructor</label>
-        <input
-          type="text"
-          placeholder="Enter instructor name"
-          value={formData.instructor}
-          onChange={(e) => setFormData({...formData, instructor: e.target.value})}
-          className="border p-4 w-full text-lg rounded-lg bg-white/20 text-white placeholder-gray-300"
-        />
-      </div>
-
-      <button 
-        type="submit" 
-        className="w-full bg-maejo-gold hover:bg-maejo-light-gold text-maejo-green text-xl font-bold py-4 px-6 rounded-lg transition-all duration-300 hover:shadow-lg mt-6"
-      >
+      <button type="submit" className="maejo-button w-full">
         Add Course
       </button>
     </form>
