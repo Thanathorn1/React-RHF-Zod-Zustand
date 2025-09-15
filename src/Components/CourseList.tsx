@@ -1,4 +1,4 @@
-import { useCourseStore } from '../store/courseStore';
+import { useCourseStore } from 'src/Store/CourseStore.ts';
 
 const CourseList = () => {
   const { courses, dropCourse, getGPA } = useCourseStore();

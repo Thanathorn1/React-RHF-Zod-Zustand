@@ -1,4 +1,4 @@
-import { useTodoStore } from '../store/todoStore';
+import { useTodoStore } from 'src/Store/TodoStore.ts';
 
 const TodoList = () => {
   const { todos, deleteTodo, toggleTodo } = useTodoStore();
